@@ -1,0 +1,109 @@
+/*
+ * Copyright (c) 2015 Project contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ */
+
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.mobilize.uninstaller"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            if (rootProject.file('private.properties').exists()) {
+                def props = new Properties()
+                props.load(new FileInputStream(rootProject.file('private.properties')))
+
+                storeFile = file(props['KEYSTORE_FILE'])
+                storePassword = props['KEYSTORE_PASSWORD']
+                keyAlias = props['KEYSTORE_KEY_ALIAS']
+                keyPassword = props['KEYSTORE_KEY_PASSWORD']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            if (rootProject.file('private.properties').exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+task checkAuthors {
+    def actualAuthorEmails = "git log --format='%ae'".execute().text;
+    def listedAuthorEmails = new File("AUTHORS").text;
+    println actualAuthorEmails;
+    println listedAuthorEmails;
+//
+//    def
+//
+//    def script = "python GenerateSources.py".execute()
+//    script.in.eachLine { line -> println line }
+//    script.err.eachLine { line -> println "ERROR: " + line }
+//    script.waitFor()
+}
+
+afterEvaluate {
+    preReleaseBuild.dependsOn(checkAuthors)
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Support libs
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+
+    // Activity leak tracking
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.leakcanaryVersion"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+
+    compile("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
+        transitive = true;
+    }
+
+    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
+
+    testCompile "junit:junit:$rootProject.junitVersion"
+}

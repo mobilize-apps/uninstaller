@@ -1,0 +1,4 @@
+# Create a "fabric.properties" file in your app directory based on the structure below
+# Refere to https://docs.fabric.io/android/fabric/integration.html#add-api-key-and-build-secret for more details
+apiSecret=YOUR_FABRIC_API_SECRET
+apiKey=YOUR_FABRIC_API_KEY

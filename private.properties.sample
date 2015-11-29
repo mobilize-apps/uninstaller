@@ -1,0 +1,7 @@
+# Private properties sample. Copy this file to private.properties and modify the values below to configure your builds
+
+# Release keystore config
+KEYSTORE_FILE=/path/to/keystore.jks
+KEYSTORE_PASSWORD=keystorepassword
+KEYSTORE_KEY_ALIAS=keyalias
+KEYSTORE_KEY_PASSWORD=keypassword
