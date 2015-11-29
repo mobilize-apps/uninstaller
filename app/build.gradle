@@ -68,20 +68,36 @@ android {
 }
 
 task checkAuthors {
-    def actualAuthorEmails = "git log --format='%ae'".execute().text;
-    def listedAuthorEmails = new File("AUTHORS").text;
-    println actualAuthorEmails;
-    println listedAuthorEmails;
-//
-//    def
-//
-//    def script = "python GenerateSources.py".execute()
-//    script.in.eachLine { line -> println line }
-//    script.err.eachLine { line -> println "ERROR: " + line }
-//    script.waitFor()
+    def gitEmailsText = "git log --format=%ae".execute().text
+    def authorsEmailsText = new File("AUTHORS").text
+
+    def actualAuthorEmails = new HashSet()
+    def listedAuthorEmails = new HashSet()
+
+    gitEmailsText.eachLine { line -> actualAuthorEmails.add(line.toLowerCase()) }
+    authorsEmailsText.eachLine { entry ->
+        try {
+            def email = (entry =~ /<([^>]+)>/)[0][1]
+            listedAuthorEmails.add(email.toLowerCase())
+        } catch (Exception e) {
+            throw new GradleException("AUTHORS entry '$entry' is not formatted correctly. Must be 'Author Name <email@domain.tld>'")
+        }
+    }
+
+    // Match sets
+    if (!actualAuthorEmails.equals(listedAuthorEmails)) {
+        def diff = (actualAuthorEmails - listedAuthorEmails);
+        if (!diff.empty) {
+            throw new GradleException("The following author(s): $diff are not listed on AUTHORS file")
+        } else {
+            diff = listedAuthorEmails - actualAuthorEmails;
+            throw new GradleException("The following author(s): $diff are listed on AUTHORS file without commits to the project")
+        }
+    }
 }
 
 afterEvaluate {
+    // Check authors list before building release builds
     preReleaseBuild.dependsOn(checkAuthors)
 }
 
