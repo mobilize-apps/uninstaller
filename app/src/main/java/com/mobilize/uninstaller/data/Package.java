@@ -17,28 +17,28 @@ package com.mobilize.uninstaller.data;
 import java.util.Date;
 
 public class Package {
+    private final String mPackageId;
     private final String mLabel;
-    private final String mPackageName;
     private final Date mInstallDate;
     private final long mApkSize;
     private final long mDataSize;
     private final String mIconUri;
 
-    public Package(String label, String packageName, Date installDate, long apkSize, long dataSize, String iconUri) {
+    public Package(String packageId, String label, Date installDate, long apkSize, long dataSize, String iconUri) {
+        mPackageId = packageId;
         mLabel = label;
-        mPackageName = packageName;
         mInstallDate = installDate;
         mApkSize = apkSize;
         mDataSize = dataSize;
         mIconUri = iconUri;
     }
 
-    public String getLabel() {
-        return mLabel;
+    public String getPackageId() {
+        return mPackageId;
     }
 
-    public String getPackageName() {
-        return mPackageName;
+    public String getLabel() {
+        return mLabel;
     }
 
     public Date getInstallDate() {

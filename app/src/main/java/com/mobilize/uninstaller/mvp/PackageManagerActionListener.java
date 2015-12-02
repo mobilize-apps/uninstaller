@@ -12,24 +12,16 @@
  * copies or substantial portions of the Software.
  */
 
-package com.mobilize.uninstaller.data;
+package com.mobilize.uninstaller.mvp;
+
+import com.mobilize.uninstaller.data.Package;
 
 import java.util.List;
 
-public interface PackageManagerApi {
-    interface Callback<T> {
-        void onSuccess(T result);
+public interface PackageManagerActionListener {
+    void onStarted();
 
-        void onError(Exception e);
-    }
+    void onStopped();
 
-    interface OnPackagesChangedListener {
-        void onPackagesChanged(List<Package> newPackages);
-    }
-
-    void getUserRemovablePackages(Callback<List<Package>> callback);
-
-    void uninstallPackages(final List<Package> packages);
-
-    void setOnPackagesChangedListener(final OnPackagesChangedListener listener);
+    void onUninstallPackages(List<Package> packages);
 }
