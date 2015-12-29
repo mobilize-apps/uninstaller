@@ -12,7 +12,7 @@
  * copies or substantial portions of the Software.
  */
 
-package com.mobilize.uninstaller;
+package com.mobilize.uninstaller.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.crashlytics.android.Crashlytics;
+import com.mobilize.uninstaller.R;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {

@@ -14,46 +14,20 @@
 
 package com.mobilize.uninstaller.data;
 
+import android.graphics.drawable.Drawable;
+
+import java.io.File;
 import java.util.Date;
 
 public class Package {
-    private final String mPackageId;
-    private final String mLabel;
-    private final Date mInstallDate;
-    private final long mApkSize;
-    private final long mDataSize;
-    private final String mIconUri;
+    public String mPackageId;
+    public String mLabel;
+    public Date mInstallDate;
+    public File apkFile;
+    public long mApkSize;
+    public long mDataSize;
+    public Drawable mIcon;
 
-    public Package(String packageId, String label, Date installDate, long apkSize, long dataSize, String iconUri) {
-        mPackageId = packageId;
-        mLabel = label;
-        mInstallDate = installDate;
-        mApkSize = apkSize;
-        mDataSize = dataSize;
-        mIconUri = iconUri;
-    }
-
-    public String getPackageId() {
-        return mPackageId;
-    }
-
-    public String getLabel() {
-        return mLabel;
-    }
-
-    public Date getInstallDate() {
-        return mInstallDate;
-    }
-
-    public long getApkSize() {
-        return mApkSize;
-    }
-
-    public long getDataSize() {
-        return mDataSize;
-    }
-
-    public String getIconUri() {
-        return mIconUri;
+    public Package() {
     }
 }

@@ -13,7 +13,7 @@
   -->
 
 <fragment android:id="@+id/fragment"
-          android:name="com.mobilize.uninstaller.MainActivityFragment"
+          android:name="com.mobilize.uninstaller.ui.AppsFragment"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:aPackage="http://schemas.android.com/apk/res-auto"
           xmlns:tools="http://schemas.android.com/tools"
